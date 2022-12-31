@@ -1,0 +1,26 @@
+{
+  "data": {
+    "timers": [
+      {
+        "taskId": "1",
+        "timeLogs": [
+          {
+            "timeSpent": 123,
+            "endTime": "yyyymmdd"
+          },
+          {
+            "timeSpent": 123,
+            "endTime": "yyyymmdd"
+          }
+        ],
+        "taskTag": "tag",
+        "taskStatus": "active",
+        "taskLocation": {
+          "lat": "2q34234",
+          "long": "13423423",
+          "location": "Madurai ,TN"
+        }
+      }
+    ]
+  }
+}
