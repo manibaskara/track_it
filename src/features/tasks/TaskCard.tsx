@@ -59,12 +59,17 @@ const TaskCard: React.FC<TaskCardProps> = ({task}) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   var color = fadeAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['white', AppPrimaryColor],
+    outputRange: ['white', AppPositiveColor],
   });
 
   useEffect(() => {
     if (task.animate) {
       Animated.sequence([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: false,
+        }),
         Animated.timing(fadeAnim, {
           toValue: 0,
           duration: 500,

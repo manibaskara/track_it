@@ -10,6 +10,7 @@ const Summary: React.FC = () => {
 
   const [isLastWeek, setIsLastWeek] = useState(true);
 
+  const tasks = isLastWeek ? lastWeekTasks : lastMonthTasks;
   const _renderItem = ({
     item,
   }: {
@@ -18,14 +19,17 @@ const Summary: React.FC = () => {
   }): ReactElement<any, string> | null => {
     return (
       <View style={styles.card}>
-        <Text>{item.title}</Text>
-        <Text>Total Time Spent:</Text>
+        <Text style={styles.titleStyle}>{item.title}</Text>
+        <Text style={styles.titleStyle}>Total Time Spent:</Text>
         <Clock totalSeconds={item.totalDuration} />
 
+        <Text style={styles.titleStyle}>Time Logs:</Text>
         {item.timeLogs.map(timeLog => {
           return (
-            <View>
-              <Text>{new Date(timeLog.endTime).toDateString()}</Text>
+            <View key={timeLog.endTime}>
+              <Text style={styles.textStyle}>
+                {new Date(timeLog.endTime).toLocaleString()}:
+              </Text>
               <Clock totalSeconds={timeLog.timeSpent} />
             </View>
           );
@@ -49,43 +53,50 @@ const Summary: React.FC = () => {
   };
 
   return (
-    <View>
-      <View>
-        <View style={styles.row}>
-          <Chip
-            title="Last Week"
-            onPress={onClickLastWeek}
-            type={isLastWeek ? 'solid' : 'outline'}
-          />
-          <View style={styles.horizontalMargin}>
-            <Chip
-              title="Last Month"
-              type={!isLastWeek ? 'solid' : 'outline'}
-              onPress={onClickLastMonth}
-            />
-          </View>
-        </View>
-        <FlatList
-          data={isLastWeek ? lastWeekTasks : lastMonthTasks}
-          keyExtractor={item => item.id}
-          renderItem={({item, index}) => _renderItem({item, index})}
+    <View style={styles.container}>
+      <View style={styles.row}>
+        <Chip
+          title="Last Week"
+          onPress={onClickLastWeek}
+          type={isLastWeek ? 'solid' : 'outline'}
         />
+        <View style={styles.horizontalMargin}>
+          <Chip
+            title="Last Month"
+            type={!isLastWeek ? 'solid' : 'outline'}
+            onPress={onClickLastMonth}
+          />
+        </View>
       </View>
+      <FlatList
+        ListHeaderComponent={() => {
+          return (
+            <Text style={styles.titleStyle}>
+              {isLastWeek ? 'Last Week Summary' : 'Last Month Summary'}
+            </Text>
+          );
+        }}
+        contentContainerStyle={tasks.length === 0 ? styles.emptyContainer : {}}
+        ListEmptyComponent={<Text>No Tasks</Text>}
+        data={tasks}
+        keyExtractor={item => item.id}
+        renderItem={({item, index}) => _renderItem({item, index})}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  chartContainer: {alignSelf: 'center', margin: 8, borderRadius: 16},
-  chart: {
-    marginBottom: 30,
-    padding: 10,
-    paddingTop: 20,
-    borderRadius: 20,
-    width: 375,
+  container: {
+    flex: 1,
   },
   horizontalMargin: {
     marginHorizontal: 12,
+  },
+  emptyContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   card: {
     shadowColor: 'black',
@@ -98,6 +109,19 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginHorizontal: 12,
     borderRadius: 10,
+  },
+  textStyle: {
+    marginVertical: 12,
+    marginStart: 12,
+    color: 'black',
+    fontSize: 16,
+  },
+  titleStyle: {
+    marginTop: 12,
+    marginStart: 12,
+    color: 'black',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   row: {
     flexDirection: 'row',
