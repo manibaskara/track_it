@@ -1,6 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet, SectionList, Text} from 'react-native';
 import {FAB} from '@rneui/themed';
+import useGeoLocation from '../../utils/useGeoLocation';
 
 import AddTaskModal from './AddTaskModal';
 import TaskCard from './TaskCard';
@@ -11,6 +12,7 @@ import {AppPrimaryColor, AppSecondaryColor} from '../../components/constants';
 const TaskScreen = () => {
   const [addTaskModalVisible, setAddTaskModalVisible] = useState(false);
   const sectionRef = React.useRef<SectionList>(null);
+  const {position} = useGeoLocation();
 
   const onAddTaskModalClose = () => {
     setAddTaskModalVisible(false);
@@ -59,6 +61,7 @@ const TaskScreen = () => {
           modalVisible={addTaskModalVisible}
           onModalClose={onAddTaskModalClose}
           scrollToCategory={scrollToPosition}
+          position={position}
         />
       ) : null}
       <FAB

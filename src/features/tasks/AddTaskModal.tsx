@@ -3,13 +3,14 @@ import {Pressable, StyleSheet, View} from 'react-native';
 import {Chip, Dialog} from '@rneui/themed';
 import {addTask, TASK_CATEGORY, TASK_STATUS} from './TaskSlice';
 import {useAppDispatch} from '../../store/hooks';
-import useGeoLocation from '../../utils/useGeoLocation';
 import uuid from 'react-native-uuid';
 import CategoryModal from '../../components/CategoryModal';
 import {Input} from '@rneui/themed';
+import {GeolocationResponse} from '@react-native-community/geolocation';
 
 type Props = {
   modalVisible: boolean;
+  position?: GeolocationResponse | null;
   onModalClose: () => void;
   scrollToCategory: (category: TASK_CATEGORY) => void;
 };
@@ -17,6 +18,7 @@ type Props = {
 const AddTaskModal: React.FC<Props> = ({
   modalVisible,
   onModalClose,
+  position,
   scrollToCategory,
 }) => {
   const dispatch = useAppDispatch();
@@ -29,7 +31,6 @@ const AddTaskModal: React.FC<Props> = ({
 
   const [titleError, setTitleError] = React.useState<string>();
   const [descriptionError, setDescriptionError] = React.useState<string>();
-  const {position} = useGeoLocation();
 
   const onAddTask = (): void => {
     if (!title || !description) {
@@ -91,12 +92,16 @@ const AddTaskModal: React.FC<Props> = ({
       </Pressable>
       <View style={styles.row}>
         <Chip
-          style={styles.chipStyle}
+          containerStyle={styles.chipStyle}
           title="Cancel"
           type="outline"
           onPress={onModalClose}
         />
-        <Chip style={styles.chipStyle} title="Submit" onPress={onAddTask} />
+        <Chip
+          containerStyle={styles.chipStyle}
+          title="Submit"
+          onPress={onAddTask}
+        />
       </View>
       <CategoryModal
         isModalVisible={isCategoriesBottomsheetVisible}
