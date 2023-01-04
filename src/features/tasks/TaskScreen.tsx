@@ -44,7 +44,7 @@ const TaskScreen = () => {
         ref={sectionRef}
         stickySectionHeadersEnabled
         sections={categorizedTasks}
-        ListEmptyComponent={<Text>No Tasks</Text>}
+        ListEmptyComponent={<Text style={styles.textStyle}>No Tasks</Text>}
         renderItem={({item}) => <TaskCard task={item} />}
         keyExtractor={item => item.id}
         contentContainerStyle={tasks.length === 0 ? styles.emptyContainer : {}}
@@ -89,6 +89,9 @@ const styles = StyleSheet.create({
     margin: 16,
     right: 0,
     bottom: 0,
+  },
+  textStyle: {
+    color: 'black',
   },
   categorySection: {
     backgroundColor: AppSecondaryColor,

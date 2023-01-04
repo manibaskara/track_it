@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text, TextInput} from 'react-native';
-import {Button, Dialog} from '@rneui/themed';
+import {Chip, Dialog} from '@rneui/themed';
 import {logTimeManually, TaskLogType} from './TaskSlice';
 import {useAppDispatch} from '../../store/hooks';
 import {dhmToSeconds} from '../../utils/util';
@@ -98,13 +98,14 @@ const LogTimeModal: React.FC<Props> = ({
           </View>
         </View>
 
-        <View style={styles.row}>
-          <Button style={styles.buttonStyle} onPress={onModalClose}>
-            Cancel
-          </Button>
-          <Button style={styles.buttonStyle} onPress={onSubmitClick}>
-            Submit
-          </Button>
+        <View style={styles.spread}>
+          <View style={styles.buttonStyle}>
+            <Chip title="Cancel" type="outline" onPress={onModalClose} />
+          </View>
+
+          <View style={styles.buttonStyle}>
+            <Chip title="Submit" onPress={onSubmitClick} />
+          </View>
         </View>
       </View>
     </Dialog>
@@ -117,6 +118,11 @@ const styles = StyleSheet.create({
   },
   row: {
     marginVertical: 12,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  spread: {
+    marginTop: 12,
     flexDirection: 'row',
     justifyContent: 'center',
   },
@@ -139,6 +145,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     textAlign: 'center',
+    color: 'black',
   },
   rowContainer: {
     flexDirection: 'row',
@@ -146,6 +153,7 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     fontSize: 16,
+    color: 'black',
     fontWeight: 'bold',
     textAlign: 'center',
   },

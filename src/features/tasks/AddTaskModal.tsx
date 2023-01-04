@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
   },
   row: {
     marginTop: 12,
+    alignItems: 'stretch',
     flexDirection: 'row',
     justifyContent: 'center',
   },

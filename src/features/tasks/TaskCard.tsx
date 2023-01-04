@@ -27,7 +27,7 @@ import {
   AppPrimaryColor,
   AppWarningColor,
 } from '../../components/constants';
-import {Text, Chip} from '@rneui/themed';
+import {Text, Chip, Divider} from '@rneui/themed';
 import {StackNavigationProp} from '@react-navigation/stack';
 import Clock from '../../components/Clock';
 
@@ -199,7 +199,10 @@ const TaskCard: React.FC<TaskCardProps> = ({task}) => {
       <Text style={styles.textStyle} h4>
         {task.title}
       </Text>
+      <Divider style={styles.divider} />
+
       <Text style={styles.textStyle}>{task.description}</Text>
+      <Divider style={styles.divider} />
 
       {logTimeModalVisible ? (
         <LogTimeModal
@@ -210,6 +213,8 @@ const TaskCard: React.FC<TaskCardProps> = ({task}) => {
       ) : null}
 
       <Clock totalSeconds={task.totalDuration} />
+      <Divider style={styles.divider} />
+
       <View style={styles.rowSpread}>
         <Chip
           title="Log Time"
@@ -265,6 +270,8 @@ const TaskCard: React.FC<TaskCardProps> = ({task}) => {
           }
         />
       </View>
+      <Divider style={styles.divider} />
+
       {task.location ? (
         <Chip
           title="Show Location"
@@ -285,7 +292,6 @@ const styles = StyleSheet.create({
   row: {flexDirection: 'row', justifyContent: 'flex-end'},
   rowSpread: {
     flexDirection: 'row',
-    marginVertical: 12,
     justifyContent: 'space-between',
   },
   card: {
@@ -317,6 +323,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     flex: 1,
+  },
+  divider: {
+    marginVertical: 8,
   },
 });
 

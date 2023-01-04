@@ -33,10 +33,11 @@ const Summary: React.FC = () => {
   }): ReactElement<any, string> | null => {
     return (
       <View style={styles.card}>
-        <Text style={styles.titleStyle}>Category : {item.category}</Text>
         <Text style={styles.titleStyle}>{item.title}</Text>
+        <Divider style={styles.divider} />
         <Text style={styles.titleStyle}>Total Time Spent:</Text>
         <Clock totalSeconds={item.totalDuration} />
+        <Divider style={styles.divider} />
 
         <Text style={styles.titleStyle}>Time Logs:</Text>
         {item.timeLogs.map(timeLog => {
