@@ -1,25 +1,29 @@
 import React from 'react';
-import Summary from '../features/summary/Summary';
+import Summary from '../features/tasks/Summary';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import TaskScreen from '../features/tasks/TaskScreen';
+import {AppPrimaryColor} from '../components/constants';
+import MapScreen from '../features/tasks/MapScreen';
+import {HomeStackParamsList, SummaryStackParamsList} from './types';
 
 const Tab = createBottomTabNavigator();
 
-const HomeStack = createNativeStackNavigator();
+const HomeStack = createNativeStackNavigator<HomeStackParamsList>();
 
 function HomeStackScreen() {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator initialRouteName="Tasks">
       <HomeStack.Screen name="Tasks" component={TaskScreen} />
+      <HomeStack.Screen name="Map" component={MapScreen} />
     </HomeStack.Navigator>
   );
 }
 
-const SummaryStack = createNativeStackNavigator();
+const SummaryStack = createNativeStackNavigator<SummaryStackParamsList>();
 
 function SummaryStackScreen() {
   return (
@@ -39,17 +43,13 @@ const Navigation = () => {
             let iconName;
 
             if (route.name === 'Home') {
-              iconName = focused
-                ? 'ios-information-circle'
-                : 'ios-information-circle-outline';
-            } else if (route.name === 'Summary') {
-              iconName = focused ? 'ios-list' : 'ios-list-outline';
+              iconName = focused ? 'ios-home' : 'ios-home-outline';
+            } else {
+              iconName = focused ? 'analytics' : 'analytics-outline';
             }
-
-            // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: 'tomato',
+          tabBarActiveTintColor: AppPrimaryColor,
           tabBarInactiveTintColor: 'gray',
         })}>
         <Tab.Screen name="Home" component={HomeStackScreen} />

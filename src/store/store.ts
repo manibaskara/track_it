@@ -24,6 +24,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   tasks: taskReducer,
 });
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
