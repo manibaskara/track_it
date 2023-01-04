@@ -6,6 +6,7 @@
 - @react-navigation
 - reduxjs/toolkit
 - @rneui
+- typescript
 
 ## Demo
 
