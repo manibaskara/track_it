@@ -231,27 +231,39 @@ const TaskCard: React.FC<TaskCardProps> = ({task}) => {
           color={AppDangerColor}
           onPress={onClickDelete}
         />
-        {[TASK_STATUS.STARTED, TASK_STATUS.PAUSED].includes(task.status) ? (
-          <Chip
-            icon={{
-              name:
-                task.status === TASK_STATUS.STARTED
-                  ? 'pause-circle-outline'
-                  : 'play-circle-outline',
-              size: 20,
-              color: 'white',
-            }}
-            color={
-              task.status === TASK_STATUS.STARTED
-                ? AppDangerColor
-                : AppPositiveColor
-            }
-            onPress={
-              task.status === TASK_STATUS.STARTED ? onClickPause : onClickStart
-            }
-            title={task.status === TASK_STATUS.STARTED ? 'Stop' : 'Start'}
-          />
-        ) : null}
+        <Chip
+          icon={{
+            name: [
+              TASK_STATUS.RUNNING_IN_BACKGROUND,
+              TASK_STATUS.STARTED,
+            ].includes(task.status)
+              ? 'pause-circle-outline'
+              : 'play-circle-outline',
+            size: 20,
+            color: 'white',
+          }}
+          color={
+            [TASK_STATUS.RUNNING_IN_BACKGROUND, TASK_STATUS.STARTED].includes(
+              task.status,
+            )
+              ? AppDangerColor
+              : AppPositiveColor
+          }
+          onPress={
+            [TASK_STATUS.RUNNING_IN_BACKGROUND, TASK_STATUS.STARTED].includes(
+              task.status,
+            )
+              ? onClickPause
+              : onClickStart
+          }
+          title={
+            [TASK_STATUS.RUNNING_IN_BACKGROUND, TASK_STATUS.STARTED].includes(
+              task.status,
+            )
+              ? 'Stop'
+              : 'Start'
+          }
+        />
       </View>
       {task.location ? (
         <Chip

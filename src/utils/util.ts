@@ -1,4 +1,4 @@
-import {Task, TaskLogType} from '../features/tasks/TaskSlice';
+import {Task, TaskLogType, TASK_CATEGORY} from '../features/tasks/TaskSlice';
 import {RootState} from '../store/store';
 import cloneDeep from 'lodash/cloneDeep';
 
@@ -58,4 +58,14 @@ export const fetchTasksForDuration = (state: RootState, days: number) => {
   });
 
   return tasksList;
+};
+
+export const filterTasksByCategory = (
+  tasks: Task[],
+  category?: TASK_CATEGORY,
+) => {
+  if (!category) {
+    return tasks;
+  }
+  return tasks.filter(task => task.category === category);
 };

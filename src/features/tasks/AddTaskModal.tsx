@@ -5,7 +5,7 @@ import {addTask, TASK_CATEGORY, TASK_STATUS} from './TaskSlice';
 import {useAppDispatch} from '../../store/hooks';
 import useGeoLocation from '../../utils/useGeoLocation';
 import uuid from 'react-native-uuid';
-import {BottomSheet, ListItem} from '@rneui/themed';
+import CategoryModal from '../../components/CategoryModal';
 import {Input} from '@rneui/themed';
 
 type Props = {
@@ -98,20 +98,13 @@ const AddTaskModal: React.FC<Props> = ({
         />
         <Chip style={styles.chipStyle} title="Submit" onPress={onAddTask} />
       </View>
-      <BottomSheet modalProps={{}} isVisible={isCategoriesBottomsheetVisible}>
-        {Object.values(TASK_CATEGORY).map(category => (
-          <ListItem
-            key={category}
-            onPress={() => {
-              setSelectedCategory(category);
-              setIsCategoriesBottomsheetVisible(false);
-            }}>
-            <ListItem.Content>
-              <ListItem.Title>{category}</ListItem.Title>
-            </ListItem.Content>
-          </ListItem>
-        ))}
-      </BottomSheet>
+      <CategoryModal
+        isModalVisible={isCategoriesBottomsheetVisible}
+        onCategorySelected={setSelectedCategory}
+        onClose={() => {
+          setIsCategoriesBottomsheetVisible(false);
+        }}
+      />
     </Dialog>
   );
 };

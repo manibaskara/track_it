@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   clockTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
   clockText: {
     marginHorizontal: 16,

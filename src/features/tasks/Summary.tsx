@@ -1,16 +1,30 @@
-import {Chip} from '@rneui/themed';
+import {ButtonGroup, Chip, Divider} from '@rneui/themed';
 import React, {ReactElement, useState} from 'react';
 import {View, FlatList, StyleSheet, Text} from 'react-native';
 import Clock from '../../components/Clock';
 import {useAppSelector} from '../../store/hooks';
-import {selectLastWeekTasks, selectLastMonthTasks, Task} from './TaskSlice';
+import {filterTasksByCategory} from '../../utils/util';
+import {
+  selectLastWeekTasks,
+  selectLastMonthTasks,
+  Task,
+  TASK_CATEGORY,
+} from './TaskSlice';
 const Summary: React.FC = () => {
   const lastWeekTasks = useAppSelector(selectLastWeekTasks);
   const lastMonthTasks = useAppSelector(selectLastMonthTasks);
 
   const [isLastWeek, setIsLastWeek] = useState(true);
 
-  const tasks = isLastWeek ? lastWeekTasks : lastMonthTasks;
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+
+  const tasks = filterTasksByCategory(
+    isLastWeek ? lastWeekTasks : lastMonthTasks,
+    selectedIndex !== -1
+      ? Object.values(TASK_CATEGORY)?.[selectedIndex]
+      : undefined,
+  );
+
   const _renderItem = ({
     item,
   }: {
@@ -19,6 +33,7 @@ const Summary: React.FC = () => {
   }): ReactElement<any, string> | null => {
     return (
       <View style={styles.card}>
+        <Text style={styles.titleStyle}>Category : {item.category}</Text>
         <Text style={styles.titleStyle}>{item.title}</Text>
         <Text style={styles.titleStyle}>Total Time Spent:</Text>
         <Clock totalSeconds={item.totalDuration} />
@@ -31,6 +46,7 @@ const Summary: React.FC = () => {
                 {new Date(timeLog.endTime).toLocaleString()}:
               </Text>
               <Clock totalSeconds={timeLog.timeSpent} />
+              <Divider style={styles.divider} />
             </View>
           );
         })}
@@ -54,6 +70,7 @@ const Summary: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.titleStyle}>Filter By Time</Text>
       <View style={styles.row}>
         <Chip
           title="Last Week"
@@ -68,12 +85,24 @@ const Summary: React.FC = () => {
           />
         </View>
       </View>
+      <Text style={styles.titleStyle}>Filter By Category</Text>
+      <ButtonGroup
+        buttons={Object.values(TASK_CATEGORY)}
+        selectedIndex={selectedIndex}
+        onPress={value => {
+          setSelectedIndex(value);
+        }}
+      />
       <FlatList
         ListHeaderComponent={() => {
           return (
-            <Text style={styles.titleStyle}>
-              {isLastWeek ? 'Last Week Summary' : 'Last Month Summary'}
-            </Text>
+            <>
+              {tasks?.length !== 0 ? (
+                <Text style={styles.titleStyle}>
+                  {isLastWeek ? 'Last Week Summary' : 'Last Month Summary'}
+                </Text>
+              ) : null}
+            </>
           );
         }}
         contentContainerStyle={tasks.length === 0 ? styles.emptyContainer : {}}
@@ -127,6 +156,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 12,
     marginStart: 12,
+  },
+  divider: {
+    marginVertical: 8,
   },
 });
 
